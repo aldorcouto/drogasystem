@@ -20,14 +20,27 @@ create table laboratorio (
   cnpj            varchar(255) not null
 );
 
+create table classe (
+  id              serial primary key, 
+  descricao       varchar(255) not null
+)
+
+create table substancia (
+  id              serial primary key, 
+  descricao       varchar(255) not null,
+  classe_id       int not null references classe(id)
+)
+
 create table medicamento (
   id              serial primary key, 
   laboratorio_id  int not null references laboratorio(id), 
   nome            varchar(255) not null, 
+  substancia_id   int not null references substancia(id),
   dosagem         varchar(255), 
   apresentacao    varchar(255) not null check (apresentacao in ('Sólido', 'Líquido', 'Semissólido')), 
   tipo            varchar(255) not null check (tipo in ('Biológico', 'Específico', 'Fitoterápico', 'Genérico', 'Novo', 'Outros', 'Produto de Terapia Avançada', 'Radiofármaco', 'Similar')), 
   controle        varchar(255) not null check (controle in ('Não controlado', 'A2', 'A3', 'B1', 'B2', 'C1', 'C2', 'AM')), 
+  classe          varchar(255) not null,
   quantidade      varchar(255), 
   preco           numeric(10, 2) not null
 );
